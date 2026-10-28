@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduMetric | Student Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head><body>
+<div class="app-container">
+<aside class="sidebar">
+ <div class="brand"><div class="brand-icon"><i data-lucide="graduation-cap"></i></div><div><h2>EduMetric</h2><p>ACADEMIC FIELDNOTES</p></div></div>
+ <p class="menu-label">WORKSPACE</p>
+ <nav class="navigation">
+  <a href="#dashboard" class="nav-link active" data-page="dashboard"><i data-lucide="layout-dashboard"></i><span>Overview</span></a>
+  <a href="#students" class="nav-link" data-page="students"><i data-lucide="users"></i><span>Students</span></a>
+  <a href="#analytics" class="nav-link" data-page="analytics"><i data-lucide="chart-no-axes-combined"></i><span>Analytics</span></a>
+  <a href="#classification" class="nav-link" data-page="classification"><i data-lucide="git-branch"></i><span>ID3 Classification</span><span class="nav-tag">LAB</span></a>
+ </nav>
+ <div class="sidebar-note"><span class="note-mark">✳</span><p>Understand the pattern.<br><strong>Support every learner.</strong></p></div>
+ <div class="sidebar-bottom"><div class="profile-avatar">SA</div><div class="profile-info"><h4>Student Admin</h4><p>Academic Workspace</p></div></div>
+</aside>
+<main class="main-content">
+<section class="page-view active" id="page-dashboard" data-view="dashboard">
+<header class="topbar"><div><p class="breadcrumb">WORKSPACE / OVERVIEW</p><h1>Student Dashboard</h1><p class="page-description">A considered view of academic progress and student wellbeing.</p></div><div class="header-actions"><span class="live-status"><span class="status-dot"></span>System online</span><button class="primary-button" id="addStudentBtn"><i data-lucide="plus"></i>Add student</button></div></header>
+<div class="intro-banner"><div><span class="eyebrow">ACADEMIC SNAPSHOT · 2026–27</span><h2>Every student has a story.<br><em>Start with the data.</em></h2><p>Review performance signals and identify where support can make a difference.</p></div><div class="banner-art" aria-hidden="true"><span class="contour contour-one"></span><span class="contour contour-two"></span><span class="banner-star">✳</span></div></div>
+<section class="stats-grid">
+<article class="stat-card"><div class="stat-heading"><span>Total students</span><div class="stat-icon navy"><i data-lucide="users"></i></div></div><h2 id="totalStudents">0</h2><p class="stat-description">Registered student records</p></article>
+<article class="stat-card"><div class="stat-heading"><span>Average marks</span><div class="stat-icon gold"><i data-lucide="graduation-cap"></i></div></div><h2 id="averageMarks">0<span>%</span></h2><p class="stat-description">Average academic score</p></article>
+<article class="stat-card"><div class="stat-heading"><span>Avg. attendance</span><div class="stat-icon blue"><i data-lucide="calendar-check"></i></div></div><h2 id="averageAttendance">0<span>%</span></h2><p class="stat-description">Attendance across records</p></article>
+<article class="stat-card"><div class="stat-heading"><span>Students at risk</span><div class="stat-icon alert"><i data-lucide="alert-triangle"></i></div></div><h2 id="atRiskStudents">0</h2><p class="stat-description">May need extra support</p></article>
+</section>
+<section class="panel insight-panel"><div class="panel-header"><div><span class="eyebrow">QUICK INSIGHT</span><h3>Academic overview</h3><p>A quick summary of the current student dataset.</p></div><button class="text-button" data-go="analytics">Explore analytics <i data-lucide="arrow-up-right"></i></button></div><div class="mini-summary" id="overviewInsight">Load student records to see a summary of the cohort.</div></section>
+</section>
+
+<section class="page-view" id="page-students" data-view="students">
+<header class="topbar"><div><p class="breadcrumb">WORKSPACE / RECORDS</p><h1>Student Records</h1><p class="page-description">Manage student details and review individual performance indicators.</p></div><div class="header-actions"><button class="secondary-button" id="refreshBtn"><i data-lucide="refresh-cw"></i>Refresh records</button><button class="secondary-button" id="downloadCsvTemplateBtn"><i data-lucide="file-down"></i>CSV template</button><button class="secondary-button" id="importCsvBtn"><i data-lucide="upload"></i>Import CSV</button><input type="file" id="csvFileInput" accept=".csv,text/csv" hidden><button class="primary-button" id="addStudentBtnAlt"><i data-lucide="plus"></i>Add student</button></div></header>
+<section class="stats-grid compact-stats"><article class="stat-card"><div class="stat-heading"><span>Records in view</span><div class="stat-icon navy"><i data-lucide="database"></i></div></div><h2 id="studentPageCount">0</h2><p class="stat-description">Records from MongoDB</p></article><article class="stat-card"><div class="stat-heading"><span>Average score</span><div class="stat-icon gold"><i data-lucide="target"></i></div></div><h2 id="studentPageAverage">0<span>%</span></h2><p class="stat-description">Internal, external + assignment average</p></article></section>
+<section class="panel students-panel" id="students">
+<div class="panel-header students-header"><div><span class="eyebrow">STUDENT DIRECTORY</span><h3>All student records</h3><p>Search by name or roll number. Use actions to update a record.</p></div><div class="table-actions"><label class="filter-label" for="categoryFilter">Classification</label><select id="categoryFilter" class="category-filter"><option value="">All categories</option></select><div class="search-box"><i data-lucide="search"></i><input type="text" id="searchInput" placeholder="Search name or roll no."></div><button class="secondary-button" id="exportFilteredBtn"><i data-lucide="file-down"></i>Export filtered CSV</button></div></div>
+<div class="table-wrapper"><table><thead><tr><th>ROLL NO.</th><th>STUDENT</th><th>ATTENDANCE</th><th>AVG. MARKS</th><th>PERFORMANCE</th><th>ACTIONS</th></tr></thead><tbody id="studentsTableBody"><tr><td colspan="6" class="loading-message">Loading student records...</td></tr></tbody></table></div>
+<div class="table-footer"><span id="tableCount">Showing 0 students</span><span>Live database records</span></div>
+</section></section>
+
+<section class="page-view" id="page-analytics" data-view="analytics">
+<header class="topbar"><div><p class="breadcrumb">WORKSPACE / INSIGHTS</p><h1>Academic Analytics</h1><p class="page-description">Explore cohort-level patterns across marks, attendance and performance groups.</p></div><span class="data-stamp"><i data-lucide="activity"></i> LIVE DATASET</span></header>
+<section class="stats-grid compact-stats"><article class="stat-card"><div class="stat-heading"><span>Students analysed</span><div class="stat-icon navy"><i data-lucide="users"></i></div></div><h2 id="analyticsTotal">0</h2><p class="stat-description">Current cohort size</p></article><article class="stat-card"><div class="stat-heading"><span>Needs attention</span><div class="stat-icon alert"><i data-lucide="heart-pulse"></i></div></div><h2 id="analyticsRisk">0</h2><p class="stat-description">Rule-based indicator</p></article></section>
+<section class="charts-grid analytics-charts"><article class="panel chart-panel"><div class="panel-header"><div><span class="eyebrow">01 / DISTRIBUTION</span><h3>Academic performance</h3><p>Average marks for each student.</p></div></div><div class="chart-container"><canvas id="marksChart"></canvas></div></article><article class="panel chart-panel"><div class="panel-header"><div><span class="eyebrow">02 / COHORT MIX</span><h3>Performance categories</h3><p>Category breakdown based on current rules.</p></div></div><div class="chart-container doughnut-container"><canvas id="categoryChart"></canvas></div></article></section>
+<section class="panel insight-panel"><div class="panel-header"><div><span class="eyebrow">INTERPRETATION</span><h3>What the numbers suggest</h3><p>Descriptive insights from the current cohort, not causal conclusions.</p></div></div><div class="insight-grid"><article><span class="insight-number">A</span><h4>Attendance signal</h4><p>Attendance below 75% is flagged for review.</p></article><article><span class="insight-number">B</span><h4>Marks signal</h4><p>Average marks below 40% are flagged for review.</p></article><article><span class="insight-number">C</span><h4>Use responsibly</h4><p>Indicators support staff judgement; they do not replace it.</p></article></div></section>
+</section>
+
+<section class="page-view" id="page-classification" data-view="classification">
+<header class="topbar"><div><p class="breadcrumb">WORKSPACE / MACHINE LEARNING LAB</p><h1>ID3 Classification Lab</h1><p class="page-description">Inspect how a decision tree partitions student performance patterns.</p></div><span class="data-stamp"><i data-lucide="git-branch"></i> ID3 · DECISION TREE</span></header>
+<div class="lab-hero"><div><span class="eyebrow">CLASSIFICATION WORKBENCH</span><h2>From student records<br><em>to explainable decisions.</em></h2><p>Build the tree, inspect its splits and trace each prediction back to the feature values.</p></div><div class="lab-symbol"><i data-lucide="network"></i></div></div>
+<div class="stats-grid lab-stats"><article class="stat-card"><div class="stat-heading"><span>Records classified</span><div class="stat-icon navy"><i data-lucide="database"></i></div></div><h2 id="labRecordCount">—</h2><p class="stat-description">From the current database</p></article><article class="stat-card"><div class="stat-heading"><span>Input features</span><div class="stat-icon gold"><i data-lucide="list-tree"></i></div></div><h2 id="featureCount">2</h2><p class="stat-description">Features for selected target</p></article><article class="stat-card"><div class="stat-heading"><span>Target classes</span><div class="stat-icon blue"><i data-lucide="tags"></i></div></div><h2 id="targetClassCount">3</h2><p class="stat-description">Classes in selected target</p></article></div>
+<section class="lab-controls-grid"><article class="panel lab-control"><div class="section-kicker">01 / CONFIGURATION</div><h3>Classifier setup</h3><p class="muted-copy">Choose one target. The feature set changes to avoid directly using the target field as an input.</p><label for="targetAttribute">Target attribute</label><select id="targetAttribute"><option value="category">Performance category</option><option value="attendance">Attendance status</option><option value="internal">Internal exam result</option><option value="external">External exam result</option><option value="assignment">Assignment status</option></select><label>Input attributes</label><div id="featureChips"><div class="feature-chip"><i data-lucide="check-circle-2"></i> Attendance level <span>Good / Moderate / Low</span></div><div class="feature-chip"><i data-lucide="check-circle-2"></i> Marks level <span>High / Medium / Low</span></div></div><button class="primary-button wide-button" id="classificationBtn"><i data-lucide="git-branch"></i>Build decision tree</button><p class="small-note">Build runs against the student records currently stored in MongoDB.</p></article>
+<article class="panel gain-panel"><div class="section-kicker">02 / SPLIT ANALYSIS</div><h3>Information gain</h3><p class="muted-copy">ID3 selects the attribute with the highest information gain at each node.</p><div id="gainAnalysis" class="gain-analysis"><div class="placeholder-state"><i data-lucide="chart-no-axes-column-increasing"></i><p>Run classification to calculate entropy and information gain.</p></div></div></article></section>
+<section class="panel tree-panel"><div class="panel-header"><div><span class="eyebrow">03 / MODEL STRUCTURE</span><h3>Decision tree visualizer</h3><p>Nodes show split attributes; leaf nodes show the predicted class.</p></div><span class="panel-badge" id="treeStatus">Awaiting run</span></div><div id="decisionTreeView" class="tree-view"><div class="placeholder-state"><i data-lucide="git-branch"></i><p>Your generated decision tree will appear here.</p></div></div><details class="tree-json"><summary>Inspect raw tree structure</summary><pre id="treeRaw">No tree generated yet.</pre></details></section>
+<section class="panel results-panel"><div class="panel-header"><div><span class="eyebrow">04 / PREDICTION OUTPUT</span><h3>Student classification results</h3><p>Predicted categories for records in the current dataset.</p></div><span class="panel-badge" id="classificationSummary">Not run</span></div><div class="table-wrapper"><table><thead><tr><th>ROLL NO.</th><th>STUDENT</th><th>ATTENDANCE</th><th>AVERAGE MARKS</th><th>PREDICTED CATEGORY</th><th>DECISION PATH</th></tr></thead><tbody id="classificationTableBody"><tr><td colspan="6" class="empty-message">Build the decision tree to view predictions.</td></tr></tbody></table></div></section>
+<section class="method-note"><i data-lucide="info"></i><p><strong>Methodology note:</strong> Current class labels are generated using predefined attendance and marks thresholds, then used to demonstrate ID3. This is an educational demonstration, not an independently validated predictive model. Do not interpret the outputs as measured real-world accuracy.</p></section>
+</section>
+<footer class="footer"><span>EduMetric · Student Analytics System</span><span>Mini Project · 2026–27</span></footer>
+</main></div>
+    <!-- Add/Edit Student Modal -->
+    <div class="modal-overlay" id="studentModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle">Add New Student</h2>
+                    <p>Enter the student's academic details.</p>
+                </div>
+
+                <button class="close-button" id="closeModalBtn" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <form id="studentForm">
+
+                <input type="hidden" id="studentId">
+
+                <label for="rollNumber">Roll Number</label>
+                <input id="rollNumber" type="text" required>
+
+                <label for="studentName">Full Name</label>
+                <input id="studentName" type="text" required>
+
+                <label for="attendance">Attendance (%)</label>
+                <input id="attendance" type="number" min="0" max="100" required>
+
+                <label for="internalMarks">Internal Marks (%)</label>
+                <input id="internalMarks" type="number" min="0" max="100" required>
+
+                <label for="externalMarks">External Marks (%)</label>
+                <input id="externalMarks" type="number" min="0" max="100" required>
+
+                <label for="assignmentMarks">Assignment Marks (%)</label>
+                <input id="assignmentMarks" type="number" min="0" max="100" required>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-button" id="cancelBtn">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="primary-button" id="saveStudentBtn">
+                        Save Student
+                    </button>
+                </div>
+
+                <p id="formMessage" class="form-message"></p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
